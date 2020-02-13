@@ -1,10 +1,18 @@
 class UsersController < ApplicationController
+    
+    def init(user)
+        @@user = user
+    end
+
     def show
-        ##
+        byebug
+        user_notes = @@user.notes
+        render json: user_notes
     end
 
     def authenticate
         user = User.find_by(name:params[:user][:name])
+        init(user)
         if user && user.password_digest == params[:user][:password_digest]
             render json: {id: user.id, name: user.name}
         else
